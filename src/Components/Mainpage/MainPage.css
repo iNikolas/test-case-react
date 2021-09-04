@@ -1,0 +1,39 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: minmax(50px, 75px) minmax(30px, 60px) 1fr;
+  grid-template-areas:
+    "header header"
+    "aside nav"
+    "aside main";
+  text-align: center;
+}
+
+.container header {
+  margin-top: 5px;
+  min-height: 3em;
+  border: 1px solid gray;
+  grid-area: header;
+}
+
+.container aside {
+  grid-area: aside;
+  margin-top: 10px;
+  margin-right: 6px;
+}
+
+.container nav {
+  grid-area: nav;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
+
+.container nav section {
+  display: inline;
+}
+
+.container main {
+  grid-area: main;
+}

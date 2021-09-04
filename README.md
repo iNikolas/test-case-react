@@ -1,46 +1,37 @@
-# Getting Started with Create React App
+# Test Case React: Application for manage tabular Transactions Data
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+###### Technologies being used during development process:
 
-In the project directory, you can run:
+* TypeScript
+* React
+* Redux Toolkit
+* Redux Saga
+* Axios
+* Axios Mock Adapter
+* React Bootstrap
+* FileSaver.js
+* React Final Form
+* Normalizr
+* Papaparse
+* React Redux
+* React Select
+* Eslint and Prettier as Helpers
 
-### `npm start`
+You can test Live example [by the next Link](https://inikolas.github.io/test-case-react/). Please take into account that you need properly filled csv file with Transactions to correctly use application. You can find one under the "test-case-react-master" folder in the root application folder.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+###### Authorization data:
+* Login: test
+* Password: 666666
+## Description
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Application can parse csv files according to the provided pattern. Can filter tabular data, modify and delete entries and then save file back to the disc.
 
-### `npm test`
+#### Main features:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+* press "Import" button to start work with *.csv file from your local storage;
+* press "Export" button to save modified Transactions Table back to the local storage;
+* you can filter displayed data in few different ways (Transaction Status and Transaction Type filters). At the table will be displayed only data that conforms all active filters.
+* all entries at the table can be Deleted from the table or transaction Status can be changed, for this use Edit and Delete buttons respectively at the last field of each entry;
+* special List Field at the rightmost sight of the application window consistently contain history of the names of the all Imported files during working session.

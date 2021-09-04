@@ -1,0 +1,20 @@
+/* React Select -- Inline Modifier
+* Inline container with margin for better inline spacing between other elements
+*/
+.react-select--inline {
+  display: inline-block;
+  margin: 0 0.25em;
+}
+
+.react-select--inline .react-select__control {
+  min-width: 7em;
+  /*cursor: pointer;*/
+}
+
+/* Position value relative (instead of absolute) and remove transform and max-width */
+.react-select--inline .react-select__single-value {
+  font-weight: bold;
+  position: relative;
+  transform: none;
+  max-width: 15em;
+}
