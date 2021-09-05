@@ -14,7 +14,7 @@ import { saveAs } from "file-saver";
 function TransactionsTable() {
   const dispatch = useAppDispatch();
   const transactionsByStatus = useAppSelector(
-    (state) => state.transactions.transactionListByStatus.entities
+    (state) => state.transactions.transactionListByStatus
   );
   const exportTransactionsRequest = useAppSelector(
     (state) => state.fileBlob.fileRequested

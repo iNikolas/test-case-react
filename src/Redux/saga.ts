@@ -9,12 +9,12 @@ import {
 } from "./Constants";
 import { authFailed, authSucceeded } from "./authorizationSlice";
 import {
-  filterTransactionsData,
-  saveTransactionsToState,
+  saveFilteredTransactionsToState,
   changeTransactionStatus,
   deleteTransaction,
 } from "./transactionsSlice";
 import { TransactionEntry } from "./transactionsSlice";
+import {normalize, schema} from "normalizr";
 
 interface AuthPayloadType {
   username: string;
@@ -24,6 +24,21 @@ interface AuthPayloadType {
 interface AuthActionType {
   type: typeof AUTHORIZATION_REQUESTED;
   payload: AuthPayloadType;
+}
+
+interface FilteredTransactionsData {
+  entities: {
+    Cancelled: {
+      [index: string]: TransactionEntry;
+    };
+    Completed: {
+      [index: string]: TransactionEntry;
+    };
+    Pending: {
+      [index: string]: TransactionEntry;
+    };
+  };
+  result: { id: string; schema: string };
 }
 
 function* authorizeUser(action: AuthActionType): Generator {
@@ -45,8 +60,38 @@ interface TransactionsActionType {
 
 function* fetchTransactions(action: TransactionsActionType): Generator {
   try {
-    yield put(saveTransactionsToState(action.payload));
-    yield put(filterTransactionsData());
+    const PendingSchema = new schema.Entity(
+        "Pending",
+        {},
+        { idAttribute: "TransactionId" }
+    );
+    const CompletedSchema = new schema.Entity(
+        "Completed",
+        {},
+        { idAttribute: "TransactionId" }
+    );
+    const CancelledSchema = new schema.Entity(
+        "Cancelled",
+        {},
+        { idAttribute: "TransactionId" }
+    );
+    const transactionsNormalizedByStatus = new schema.Array(
+        {
+          Pending: PendingSchema,
+          Completed: CompletedSchema,
+          Cancelled: CancelledSchema,
+        },
+        (input) => {
+          return `${input.Status}`;
+        }
+    );
+
+
+    const filteredTransactionsData: FilteredTransactionsData = normalize(
+        action.payload,
+        transactionsNormalizedByStatus
+    )
+    yield put(saveFilteredTransactionsToState(filteredTransactionsData.entities));
   } catch (e: any) {
     yield alert(e.message);
   }
@@ -67,7 +112,6 @@ function* changeTransactionStatusRequested(
 ): Generator {
   try {
     yield put(changeTransactionStatus(action.payload));
-    yield put(filterTransactionsData());
   } catch (e: any) {
     yield alert(e.message);
   }
@@ -83,7 +127,6 @@ function* deleteTransactionRequested(
 ): Generator {
   try {
     yield put(deleteTransaction(action.payload));
-    yield put(filterTransactionsData());
   } catch (e: any) {
     yield alert(e.message);
   }
