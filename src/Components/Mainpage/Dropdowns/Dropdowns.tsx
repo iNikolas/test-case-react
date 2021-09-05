@@ -2,7 +2,7 @@ import React from "react";
 import Select, { OptionsType, OptionTypeBase } from "react-select";
 import makeAnimated from "react-select/animated";
 import { STATUS_OPTIONS, TYPE_OPTIONS } from "../../../Redux/Constants";
-import "./Dropdowns.css";
+import css from "./Dropdowns.module.css";
 import { useAppDispatch } from "../../../Redux/hooks";
 import {
   defineStatusFilters,
@@ -29,8 +29,8 @@ function Dropdowns() {
   return (
     <div>
       <Select
-        className="react-select--inline"
-        classNamePrefix="react-select"
+        className={css["react-select--inline"]}
+        classNamePrefix={css["react-select"]}
         closeMenuOnSelect={false}
         components={makeAnimated()}
         defaultValue={STATUS_OPTIONS}
@@ -39,8 +39,8 @@ function Dropdowns() {
         onChange={handleStatusChangeOptions}
       />
       <Select
-        className="react-select--inline"
-        classNamePrefix="react-select"
+        className={css["react-select--inline"]}
+        classNamePrefix={css["react-select"]}
         closeMenuOnSelect={false}
         components={makeAnimated()}
         defaultValue={TYPE_OPTIONS}

@@ -6,7 +6,6 @@ import {
   PUT_TRANSACTIONS_REQUESTED,
   CHANGE_TRANSACTION_STATUS_REQUESTED,
   DELETE_TRANSACTION_REQUESTED,
-  EXPORT_CSV_FILE_REQUESTED,
 } from "./Constants";
 import { authFailed, authSucceeded } from "./authorizationSlice";
 import {
@@ -16,7 +15,6 @@ import {
   deleteTransaction,
 } from "./transactionsSlice";
 import { TransactionEntry } from "./transactionsSlice";
-import { fileRequest } from "./fileBlobSlice";
 
 interface AuthPayloadType {
   username: string;
@@ -91,23 +89,6 @@ function* deleteTransactionRequested(
   }
 }
 
-//*********************
-
-interface ExportCsvFileRequestedActionType {
-  type: typeof EXPORT_CSV_FILE_REQUESTED;
-  payload: boolean;
-}
-
-function* exportCsvFileRequested(
-  action: ExportCsvFileRequestedActionType
-): Generator {
-  try {
-    yield put(fileRequest(action.payload));
-  } catch (e: any) {
-    yield alert(e.message);
-  }
-}
-
 function* mySaga() {
   yield takeEvery(AUTHORIZATION_REQUESTED, authorizeUser);
   yield takeEvery(PUT_TRANSACTIONS_REQUESTED, fetchTransactions);
@@ -116,7 +97,6 @@ function* mySaga() {
     changeTransactionStatusRequested
   );
   yield takeEvery(DELETE_TRANSACTION_REQUESTED, deleteTransactionRequested);
-  yield takeEvery(EXPORT_CSV_FILE_REQUESTED, exportCsvFileRequested);
 }
 
 async function requestAuth(params: AuthPayloadType) {

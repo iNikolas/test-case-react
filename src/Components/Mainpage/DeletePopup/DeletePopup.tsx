@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useAppDispatch } from "../../../Redux/hooks";
-import { DELETE_TRANSACTION_REQUESTED } from "../../../Redux/Constants";
+import { deleteTransactionRequested } from "../../../Redux/actions";
 
 interface PropType {
   id: number;
@@ -15,7 +15,7 @@ function DeletePopup({ id, show, setShow }: PropType) {
 
   const handleClose = () => setShow(false);
   const handleDeleteClick = () => {
-    dispatch({ type: DELETE_TRANSACTION_REQUESTED, payload: String(id) });
+    dispatch(deleteTransactionRequested(String(id)));
     setShow(false);
   };
 

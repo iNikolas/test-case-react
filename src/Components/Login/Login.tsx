@@ -6,8 +6,8 @@ import { minLength, required } from "../../validators/validators";
 import Overlay from "react-bootstrap/cjs/Overlay";
 import css from "./Login.module.css";
 import { useAppDispatch } from "../../Redux/hooks";
-import { AUTHORIZATION_REQUESTED } from "../../Redux/Constants";
 import LoginErrorAlert from "./LoginErrorAlert";
+import { authorizationRequested } from "../../Redux/actions";
 
 interface PropsType {
   style?: React.CSSProperties;
@@ -19,7 +19,7 @@ export const Login = (props: PropsType) => {
   const dispatch = useAppDispatch();
 
   const handleSubmit = (e: FormData) => {
-    dispatch({ type: AUTHORIZATION_REQUESTED, payload: e });
+    dispatch(authorizationRequested(e));
   };
 
   return (

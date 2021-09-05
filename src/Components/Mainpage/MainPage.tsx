@@ -5,11 +5,11 @@ import TableCombined from "./TableCombined";
 import Dropdowns from "./Dropdowns/Dropdowns";
 import ExportButton from "./ExportButton/ExportButton";
 import FileListGroup from "./FileListGroup/FileListGroup";
-import "./MainPage.css";
+import css from "./MainPage.module.css";
 
 const MainPage = () => {
   return (
-    <div className="container">
+    <div className={css.container}>
       <header>Application Header</header>
       <nav>
         <section>

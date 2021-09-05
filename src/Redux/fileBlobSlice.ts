@@ -14,8 +14,11 @@ export const fileBlobSlice = createSlice({
   name: "fileBlobSlice",
   initialState,
   reducers: {
-    fileRequest: (state, action: PayloadAction<boolean>) => {
-      state.fileRequested = action.payload;
+    fileRequestStarted: (state) => {
+      state.fileRequested = true;
+    },
+    fileRequestFinished: (state) => {
+      state.fileRequested = false;
     },
     updateFileList: (state, action: PayloadAction<string>) => {
       state.filesList.push(action.payload);
@@ -23,6 +26,7 @@ export const fileBlobSlice = createSlice({
   },
 });
 
-export const { fileRequest, updateFileList } = fileBlobSlice.actions;
+export const { fileRequestStarted, fileRequestFinished, updateFileList } =
+  fileBlobSlice.actions;
 
 export default fileBlobSlice.reducer;

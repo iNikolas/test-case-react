@@ -2,9 +2,9 @@ import Papa from "papaparse";
 import React, { ChangeEvent, useRef, useState } from "react";
 import Button from "react-bootstrap/cjs/Button";
 import { useAppDispatch } from "../../../Redux/hooks";
-import { PUT_TRANSACTIONS_REQUESTED } from "../../../Redux/Constants";
 import { awaitingForData } from "../../../Redux/transactionsSlice";
 import { updateFileList } from "../../../Redux/fileBlobSlice";
+import { putTransactionRequested } from "../../../Redux/actions";
 
 function ImportButton() {
   const [isLoading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ function ImportButton() {
       Papa.parse(e.currentTarget.files[0], {
         complete: (results) => {
           setLoading(false);
-          dispatch({ type: PUT_TRANSACTIONS_REQUESTED, payload: results.data });
+          dispatch(putTransactionRequested(results.data));
         },
         delimiter: ",",
         header: true,

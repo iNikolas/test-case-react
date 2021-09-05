@@ -6,7 +6,7 @@ import DeletePopup from "../DeletePopup/DeletePopup";
 
 interface PropType {
   id: number;
-  status: string;
+  status: "Pending" | "Completed" | "Cancelled";
 }
 
 function ActionButtons({ id, status }: PropType) {

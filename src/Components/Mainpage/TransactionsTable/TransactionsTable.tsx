@@ -7,7 +7,7 @@ import {
   defineTotalAmountEntriesOfTheTable,
 } from "../../../Redux/transactionsSlice";
 import ActionButtons from "../ActionButtons/ActionButtons";
-import { fileRequest } from "../../../Redux/fileBlobSlice";
+import { fileRequestFinished } from "../../../Redux/fileBlobSlice";
 import Papa from "papaparse";
 import { saveAs } from "file-saver";
 
@@ -50,8 +50,7 @@ function TransactionsTable() {
         type: "text/plain;charset=utf-8",
       });
       saveAs(blob, "transaction.csv");
-      console.log(unparsedTableData);
-      dispatch(fileRequest(false));
+      dispatch(fileRequestFinished());
     }
   }, [exportTransactionsRequest]);
   useEffect(() => {
@@ -80,7 +79,9 @@ function TransactionsTable() {
           {transactionRow}
           <td>
             <ActionButtons
-              status={arrEntryRow.Status}
+              status={
+                arrEntryRow.Status as "Pending" | "Completed" | "Cancelled"
+              }
               id={+arrEntryRow.TransactionId}
             />
           </td>

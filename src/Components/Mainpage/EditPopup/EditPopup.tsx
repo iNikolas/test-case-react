@@ -3,13 +3,13 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import EditPopupDropdown from "./EditPopupDropdown/EditPopupDropdown";
 import { useAppDispatch } from "../../../Redux/hooks";
-import { CHANGE_TRANSACTION_STATUS_REQUESTED } from "../../../Redux/Constants";
+import { changeTransactionStatusRequested } from "../../../Redux/actions";
 
 interface PropType {
   id: number;
   show: boolean;
   setShow: CallableFunction;
-  status: string;
+  status: "Pending" | "Completed" | "Cancelled";
 }
 
 function EditPopup({ id, show, setShow, status }: PropType) {
@@ -23,7 +23,7 @@ function EditPopup({ id, show, setShow, status }: PropType) {
         Status: updatedStatus,
         TransactionId: String(id),
       };
-      dispatch({ type: CHANGE_TRANSACTION_STATUS_REQUESTED, payload: action });
+      dispatch(changeTransactionStatusRequested(action));
     }
     setShow(false);
   };
