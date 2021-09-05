@@ -14,7 +14,7 @@ import {
   deleteTransaction,
 } from "./transactionsSlice";
 import { TransactionEntry } from "./transactionsSlice";
-import {normalize, schema} from "normalizr";
+import { normalize, schema } from "normalizr";
 
 interface AuthPayloadType {
   username: string;
@@ -61,37 +61,38 @@ interface TransactionsActionType {
 function* fetchTransactions(action: TransactionsActionType): Generator {
   try {
     const PendingSchema = new schema.Entity(
-        "Pending",
-        {},
-        { idAttribute: "TransactionId" }
+      "Pending",
+      {},
+      { idAttribute: "TransactionId" }
     );
     const CompletedSchema = new schema.Entity(
-        "Completed",
-        {},
-        { idAttribute: "TransactionId" }
+      "Completed",
+      {},
+      { idAttribute: "TransactionId" }
     );
     const CancelledSchema = new schema.Entity(
-        "Cancelled",
-        {},
-        { idAttribute: "TransactionId" }
+      "Cancelled",
+      {},
+      { idAttribute: "TransactionId" }
     );
     const transactionsNormalizedByStatus = new schema.Array(
-        {
-          Pending: PendingSchema,
-          Completed: CompletedSchema,
-          Cancelled: CancelledSchema,
-        },
-        (input) => {
-          return `${input.Status}`;
-        }
+      {
+        Pending: PendingSchema,
+        Completed: CompletedSchema,
+        Cancelled: CancelledSchema,
+      },
+      (input) => {
+        return `${input.Status}`;
+      }
     );
 
-
     const filteredTransactionsData: FilteredTransactionsData = normalize(
-        action.payload,
-        transactionsNormalizedByStatus
-    )
-    yield put(saveFilteredTransactionsToState(filteredTransactionsData.entities));
+      action.payload,
+      transactionsNormalizedByStatus
+    );
+    yield put(
+      saveFilteredTransactionsToState(filteredTransactionsData.entities)
+    );
   } catch (e: any) {
     yield alert(e.message);
   }

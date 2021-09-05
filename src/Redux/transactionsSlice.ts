@@ -70,6 +70,12 @@ const initialState: TransactionsState = {
   typeFilters: ["Withdrawal", "Refill"],
 };
 
+const statusesForLookup = <StatusFilters>[
+  "Completed",
+  "Cancelled",
+  "Pending",
+];
+
 export const transactionsSlice = createSlice({
   name: "transactions",
   initialState,
@@ -112,32 +118,19 @@ export const transactionsSlice = createSlice({
         TransactionId: "",
         Type: "Withdrawal",
       };
-      const statusesForLookup = <StatusFilters>(
-        ["Completed", "Cancelled", "Pending"].filter(
-          (status) => status !== newStatus
-        )
-      );
 
       statusesForLookup.forEach((status) => {
         if (state.transactionListByStatus[status][id]) {
-          transactionEntryContainer = {
-            ...state.transactionListByStatus[status][id],
-            Status: newStatus,
-          };
+          transactionEntryContainer = state.transactionListByStatus[status][id];
+          transactionEntryContainer.Status = newStatus;
           delete state.transactionListByStatus[status][id];
         }
       });
 
-      state.transactionListByStatus[newStatus][id] = transactionEntryContainer
+      state.transactionListByStatus[newStatus][id] = transactionEntryContainer;
     },
     deleteTransaction: (state, action: PayloadAction<string>) => {
       const id = action.payload;
-      const statusesForLookup = <StatusFilters>[
-        "Completed",
-        "Cancelled",
-        "Pending",
-      ];
-
       statusesForLookup.forEach((status) => {
         delete state.transactionListByStatus[status][id];
       });

@@ -28,11 +28,14 @@ function TransactionsTable() {
 
   statusFilters.forEach((statusFilter) => {
     if (typeFilters.length === 2) {
-      filteredTransactions = { ...filteredTransactions, ...transactionsByStatus[statusFilter] };
+      filteredTransactions = {
+        ...filteredTransactions,
+        ...transactionsByStatus[statusFilter],
+      };
     } else {
-      const filteredList = Object.entries(transactionsByStatus[statusFilter]).filter(
-        (transEntry) => transEntry[1].Type === typeFilters[0]
-      );
+      const filteredList = Object.entries(
+        transactionsByStatus[statusFilter]
+      ).filter((transEntry) => transEntry[1].Type === typeFilters[0]);
       filteredTransactions = {
         ...filteredTransactions,
         ...Object.fromEntries(filteredList),
