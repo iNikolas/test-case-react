@@ -13,7 +13,7 @@ import { saveAs } from "file-saver";
 
 function TransactionsTable() {
   const dispatch = useAppDispatch();
-  const statusList = useAppSelector(
+  const transactionsByStatus = useAppSelector(
     (state) => state.transactions.transactionListByStatus.entities
   );
   const exportTransactionsRequest = useAppSelector(
@@ -24,24 +24,24 @@ function TransactionsTable() {
   );
   const typeFilters = useAppSelector((state) => state.transactions.typeFilters);
 
-  let transactionsList = {};
+  let filteredTransactions = {};
 
   statusFilters.forEach((statusFilter) => {
     if (typeFilters.length === 2) {
-      transactionsList = { ...transactionsList, ...statusList[statusFilter] };
+      filteredTransactions = { ...filteredTransactions, ...transactionsByStatus[statusFilter] };
     } else {
-      const filteredList = Object.entries(statusList[statusFilter]).filter(
+      const filteredList = Object.entries(transactionsByStatus[statusFilter]).filter(
         (transEntry) => transEntry[1].Type === typeFilters[0]
       );
-      transactionsList = {
-        ...transactionsList,
+      filteredTransactions = {
+        ...filteredTransactions,
         ...Object.fromEntries(filteredList),
       };
     }
   });
 
   const transactionListValues: Array<TransactionEntry> =
-    Object.values(transactionsList);
+    Object.values(filteredTransactions);
 
   useEffect(() => {
     if (exportTransactionsRequest) {
