@@ -90,6 +90,20 @@ function* fetchTransactions(action: TransactionsActionType): Generator {
       action.payload,
       transactionsNormalizedByStatus
     );
+
+    type ExpectedStatuses = Array<"Completed" | "Cancelled" | "Pending">;
+    const expectedStatuses: ExpectedStatuses = [
+      "Completed",
+      "Cancelled",
+      "Pending",
+    ];
+
+    expectedStatuses.forEach(status => {
+      if (!filteredTransactionsData.entities[status]) {
+        filteredTransactionsData.entities[status] = {}
+      }
+    })
+
     yield put(
       saveFilteredTransactionsToState(filteredTransactionsData.entities)
     );
