@@ -33,13 +33,15 @@ function TransactionsTable() {
         ...transactionsByStatus[statusFilter],
       };
     } else {
-      const filteredList = Object.entries(
-        transactionsByStatus[statusFilter]
-      ).filter((transEntry) => transEntry[1].Type === typeFilters[0]);
-      filteredTransactions = {
-        ...filteredTransactions,
-        ...Object.fromEntries(filteredList),
-      };
+      if (transactionsByStatus[statusFilter]) {
+        const filteredList = Object.entries(
+          transactionsByStatus[statusFilter]
+        ).filter((transEntry) => transEntry[1].Type === typeFilters[0]);
+        filteredTransactions = {
+          ...filteredTransactions,
+          ...Object.fromEntries(filteredList),
+        };
+      }
     }
   });
 
