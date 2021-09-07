@@ -98,11 +98,11 @@ function* fetchTransactions(action: TransactionsActionType): Generator {
       "Pending",
     ];
 
-    expectedStatuses.forEach(status => {
+    expectedStatuses.forEach((status) => {
       if (!filteredTransactionsData.entities[status]) {
-        filteredTransactionsData.entities[status] = {}
+        filteredTransactionsData.entities[status] = {};
       }
-    })
+    });
 
     yield put(
       saveFilteredTransactionsToState(filteredTransactionsData.entities)

@@ -70,11 +70,7 @@ const initialState: TransactionsState = {
   typeFilters: ["Withdrawal", "Refill"],
 };
 
-const statusesForLookup = <StatusFilters>[
-  "Completed",
-  "Cancelled",
-  "Pending",
-];
+const statusesForLookup = <StatusFilters>["Completed", "Cancelled", "Pending"];
 
 export const transactionsSlice = createSlice({
   name: "transactions",
