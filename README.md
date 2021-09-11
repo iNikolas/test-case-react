@@ -17,6 +17,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Papaparse
 - React Redux
 - React Select
+- Reselect
 - Eslint and Prettier as Helpers
 
 By the next Link you can [test Live example of the application](https://inikolas.github.io/test-case-react/). Please take into account that you need properly filled csv file with Transactions to correctly use application. You can [download CSV file](https://drive.google.com/file/d/1_lndTZvhEtHZfbbEzgJDWdsJjqBX7fWR/view?usp=sharing) by this Link.
