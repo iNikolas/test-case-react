@@ -13,7 +13,7 @@ import {
   selectHeaderCaptions,
   selectTableData,
   selectTransactionListValues,
-} from "./selectors/transactionsTable";
+} from "./transactionsTableSelectors";
 
 function TransactionsTable() {
   const dispatch = useAppDispatch();

@@ -1,8 +1,8 @@
 import { createSelector } from "reselect";
-import { useAppSelector } from "../../../../common/hooks";
-import { TransactionEntry } from "../../transactionsSlice";
-import { AMOUNT_OF_ENTRIES_FOR_ONE_TABLE_PAGE } from "../../../../common/Constants";
-import ActionButtons from "../../ActionButtons/ActionButtons";
+import { useAppSelector } from "../../../common/hooks";
+import { TransactionEntry } from "../transactionsSlice";
+import { AMOUNT_OF_ENTRIES_FOR_ONE_TABLE_PAGE } from "../../../common/Constants";
+import ActionButtons from "../ActionButtons/ActionButtons";
 import React from "react";
 
 const selectTransactionsByStatus = () =>

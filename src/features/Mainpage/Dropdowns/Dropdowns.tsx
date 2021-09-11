@@ -12,15 +12,13 @@ function Dropdowns() {
   const handleStatusChangeOptions = (
     e: OptionTypeBase | OptionsType<OptionTypeBase> | null
   ) => {
-    const values = e?.map((val: { value: string; label: string }) => val.value);
-    dispatch(defineStatusFilters(values));
+    dispatch(defineStatusFilters(e));
   };
 
   const handleTypeChangeOptions = (
     e: OptionTypeBase | OptionsType<OptionTypeBase> | null
   ) => {
-    const values = e?.map((val: { value: string; label: string }) => val.value);
-    dispatch(defineTypeFilters(values));
+    dispatch(defineTypeFilters(e));
   };
 
   return (

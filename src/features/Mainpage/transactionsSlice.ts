@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ChangeStatusPayloadActionType } from "../../app/saga/saga";
+import {
+  ChangeStatusPayloadActionType,
+  TransactionsPayloadType,
+} from "../../app/saga/saga";
+import { normalize, schema } from "normalizr";
+import { OptionsType, OptionTypeBase } from "react-select";
 
 export interface TransactionEntry {
   Amount: string;
@@ -7,6 +12,21 @@ export interface TransactionEntry {
   Status: "Completed" | "Cancelled" | "Pending";
   TransactionId: string;
   Type: "Withdrawal" | "Refill";
+}
+
+interface FilteredTransactionsData {
+  entities: {
+    Cancelled: {
+      [index: string]: TransactionEntry;
+    };
+    Completed: {
+      [index: string]: TransactionEntry;
+    };
+    Pending: {
+      [index: string]: TransactionEntry;
+    };
+  };
+  result: { id: string; schema: string };
 }
 
 interface TransactionListByStatus {
@@ -78,9 +98,52 @@ export const transactionsSlice = createSlice({
   reducers: {
     saveFilteredTransactionsToState: (
       state,
-      action: PayloadAction<TransactionListByStatus>
+      action: PayloadAction<TransactionsPayloadType>
     ) => {
-      state.transactionListByStatus = action.payload;
+      const PendingSchema = new schema.Entity(
+        "Pending",
+        {},
+        { idAttribute: "TransactionId" }
+      );
+      const CompletedSchema = new schema.Entity(
+        "Completed",
+        {},
+        { idAttribute: "TransactionId" }
+      );
+      const CancelledSchema = new schema.Entity(
+        "Cancelled",
+        {},
+        { idAttribute: "TransactionId" }
+      );
+      const transactionsNormalizedByStatus = new schema.Array(
+        {
+          Pending: PendingSchema,
+          Completed: CompletedSchema,
+          Cancelled: CancelledSchema,
+        },
+        (input) => {
+          return `${input.Status}`;
+        }
+      );
+
+      const filteredTransactionsData: FilteredTransactionsData = normalize(
+        action.payload,
+        transactionsNormalizedByStatus
+      );
+
+      const expectedStatuses: StatusFilters = [
+        "Completed",
+        "Cancelled",
+        "Pending",
+      ];
+
+      expectedStatuses.forEach((status) => {
+        if (!filteredTransactionsData.entities[status]) {
+          filteredTransactionsData.entities[status] = {};
+        }
+      });
+
+      state.transactionListByStatus = filteredTransactionsData.entities;
       state.transactionStatus = "imported";
     },
     changeCurrentTablePage: (state, action: PayloadAction<number>) => {
@@ -89,11 +152,21 @@ export const transactionsSlice = createSlice({
     awaitingForData: (state) => {
       state.transactionStatus = "importing";
     },
-    defineStatusFilters: (state, action: PayloadAction<StatusFilters>) => {
-      state.statusFilters = action.payload;
+    defineStatusFilters: (
+      state,
+      action: PayloadAction<OptionTypeBase | OptionsType<OptionTypeBase> | null>
+    ) => {
+      state.statusFilters = action.payload?.map(
+        (val: { value: string; label: string }) => val.value
+      );
     },
-    defineTypeFilters: (state, action: PayloadAction<TypeFilters>) => {
-      state.typeFilters = action.payload;
+    defineTypeFilters: (
+      state,
+      action: PayloadAction<OptionTypeBase | OptionsType<OptionTypeBase> | null>
+    ) => {
+      state.typeFilters = action.payload?.map(
+        (val: { value: string; label: string }) => val.value
+      );
     },
     defineTotalAmountEntriesOfTheTable: (
       state,

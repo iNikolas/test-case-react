@@ -17,7 +17,6 @@ import {
   deleteTransaction,
 } from "../../features/Mainpage/transactionsSlice";
 import { TransactionEntry } from "../../features/Mainpage/transactionsSlice";
-import { normalize, schema } from "normalizr";
 
 interface AuthPayloadType {
   username: string;
@@ -27,21 +26,6 @@ interface AuthPayloadType {
 interface AuthActionType {
   type: typeof AUTHORIZATION_REQUESTED;
   payload: AuthPayloadType;
-}
-
-interface FilteredTransactionsData {
-  entities: {
-    Cancelled: {
-      [index: string]: TransactionEntry;
-    };
-    Completed: {
-      [index: string]: TransactionEntry;
-    };
-    Pending: {
-      [index: string]: TransactionEntry;
-    };
-  };
-  result: { id: string; schema: string };
 }
 
 function* authorizeUser(action: AuthActionType): Generator {
@@ -54,7 +38,7 @@ function* authorizeUser(action: AuthActionType): Generator {
   }
 }
 
-type TransactionsPayloadType = Array<TransactionEntry>;
+export type TransactionsPayloadType = Array<TransactionEntry>;
 
 interface TransactionsActionType {
   type: typeof PUT_TRANSACTIONS_REQUESTED;
@@ -63,53 +47,7 @@ interface TransactionsActionType {
 
 function* fetchTransactions(action: TransactionsActionType): Generator {
   try {
-    const PendingSchema = new schema.Entity(
-      "Pending",
-      {},
-      { idAttribute: "TransactionId" }
-    );
-    const CompletedSchema = new schema.Entity(
-      "Completed",
-      {},
-      { idAttribute: "TransactionId" }
-    );
-    const CancelledSchema = new schema.Entity(
-      "Cancelled",
-      {},
-      { idAttribute: "TransactionId" }
-    );
-    const transactionsNormalizedByStatus = new schema.Array(
-      {
-        Pending: PendingSchema,
-        Completed: CompletedSchema,
-        Cancelled: CancelledSchema,
-      },
-      (input) => {
-        return `${input.Status}`;
-      }
-    );
-
-    const filteredTransactionsData: FilteredTransactionsData = normalize(
-      action.payload,
-      transactionsNormalizedByStatus
-    );
-
-    type ExpectedStatuses = Array<"Completed" | "Cancelled" | "Pending">;
-    const expectedStatuses: ExpectedStatuses = [
-      "Completed",
-      "Cancelled",
-      "Pending",
-    ];
-
-    expectedStatuses.forEach((status) => {
-      if (!filteredTransactionsData.entities[status]) {
-        filteredTransactionsData.entities[status] = {};
-      }
-    });
-
-    yield put(
-      saveFilteredTransactionsToState(filteredTransactionsData.entities)
-    );
+    yield put(saveFilteredTransactionsToState(action.payload));
   } catch (e: any) {
     yield alert(e.message);
   }
